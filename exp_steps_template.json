@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "name": "無料カウンセリング",
+      "condition": false,
+      "true_steps": [
+        {
+          "name": "参加",
+          "condition": false
+        }
+      ],
+      "false_steps": [
+        {
+          "name": "不参加",
+          "condition": false
+        }
+      ]
+    }
+  ]
+}
