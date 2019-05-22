@@ -1,0 +1,45 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+    ports:
+      - "3002:3000"
+    links:
+      - mongo
+      - mysql
+    volumes:
+      - bundle:/bundle
+      - .:/usr/src/mongo_customer_steps_sample
+    command: /bin/sh -c "rm -f /usr/src/mongo_customer_steps_sample/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+  mongo:
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    image: "mongo:4.1.11"
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    image: "mysql:5.7.26"
+    ports:
+      - "3308:3306"
+    restart: always
+    volumes:
+      - mysql_db:/var/lib/mysql
+
+volumes:
+  bundle:
+    driver: local
+  mongo_db:
+    driver: local
+  mysql_db:
+    driver: local
